@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/buildagenta/sdk/compare/react-v0.4.0...react-v0.5.0) (2026-11-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* publish as @buildagenta/react with Agenta exports ([#7](https://github.com/buildagenta/sdk/issues/7))
+
+### Features
+
+* publish as @buildagenta/react with Agenta exports ([#7](https://github.com/buildagenta/sdk/issues/7)) ([4204cd4](https://github.com/buildagenta/sdk/commit/4204cd4d5d83b51066f8edd4ce0f3114bdbcaa51))
+
 ## [0.4.0](https://github.com/buildagenta/sdk/compare/react-v0.3.0...react-v0.4.0) (2026-10-15)
 
 
