@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,7 +11,7 @@ import type { ReactNode } from "react";
 import {
     AG_UI_ARTIFACT_EVENT_NAME,
     type ReceivedArtifactFile,
-    useA2ANetArtifacts,
+    useAgentaArtifacts,
 } from "../src/index.js";
 
 const messages: Message[] = [
@@ -59,7 +59,7 @@ function fakeAgent(): { agent: AbstractAgent; emit: (event: CustomEvent) => void
 let current: ReadonlyMap<string, ReceivedArtifactFile[]> | undefined;
 
 function Probe({ agent, threadId }: { agent: AbstractAgent; threadId: string }): ReactNode {
-    current = useA2ANetArtifacts(agent, threadId);
+    current = useAgentaArtifacts(agent, threadId);
     return null;
 }
 
@@ -68,7 +68,7 @@ afterEach(() => {
     current = undefined;
 });
 
-describe("useA2ANetArtifacts", () => {
+describe("useAgentaArtifacts", () => {
     test("keys each file by the message it followed, ignoring duplicates on replay", () => {
         const { agent, emit } = fakeAgent();
         render(<Probe agent={agent} threadId="thread-1" />);

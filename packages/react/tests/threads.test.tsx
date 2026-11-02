@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,18 +7,18 @@ import { CopilotKitProvider } from "@copilotkit/react-core/v2";
 import { cleanup, render, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 
-import { A2ANetProvider, A2ANetStatus, useA2ANet, useA2ANetThreads } from "../src/index.js";
+import { AgentaProvider, AgentaStatus, useAgenta, useAgentaThreads } from "../src/index.js";
 
 const originalFetch = globalThis.fetch;
 
 function Threads(): ReactNode {
-    const { threads } = useA2ANetThreads({ agentId: "agent-1" });
+    const { threads } = useAgentaThreads({ agentId: "agent-1" });
     return <span>{threads.map((thread) => `${thread.id}:${thread.type}`).join(",")}</span>;
 }
 
 function CopilotBridge(): ReactNode {
-    const { copilotKitProps, status } = useA2ANet();
-    if (status !== A2ANetStatus.Ready) return null;
+    const { copilotKitProps, status } = useAgenta();
+    if (status !== AgentaStatus.Ready) return null;
     return (
         <CopilotKitProvider {...copilotKitProps}>
             <Threads />
@@ -31,8 +31,8 @@ afterEach(() => {
     globalThis.fetch = originalFetch;
 });
 
-describe("useA2ANetThreads", () => {
-    test("preserves the initiation type returned by A2A Net", async () => {
+describe("useAgentaThreads", () => {
+    test("preserves the initiation type returned by Agenta", async () => {
         const requests: Array<{ url: string; authorization: string | null }> = [];
         let mints = 0;
         globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -87,7 +87,7 @@ describe("useA2ANetThreads", () => {
         }) as typeof globalThis.fetch;
 
         const view = render(
-            <A2ANetProvider
+            <AgentaProvider
                 getCredentials={() => {
                     mints += 1;
                     return Promise.resolve({
@@ -98,17 +98,17 @@ describe("useA2ANetThreads", () => {
                         agentId: "agent-1",
                     });
                 }}
-                runtimeUrl="https://runtime.a2anet.test"
+                runtimeUrl="https://runtime.buildagenta.test"
             >
                 <CopilotBridge />
-            </A2ANetProvider>,
+            </AgentaProvider>,
         );
 
         await waitFor(() =>
             expect(view.getByText("thread-user:user,thread-scheduled:scheduled")).toBeTruthy(),
         );
         expect(requests.find((request) => request.url.includes("/threads?"))).toEqual({
-            url: "https://runtime.a2anet.test/threads?agentId=agent-1",
+            url: "https://runtime.buildagenta.test/threads?agentId=agent-1",
             authorization: "Bearer customer-token-2",
         });
         expect(mints).toBe(2);

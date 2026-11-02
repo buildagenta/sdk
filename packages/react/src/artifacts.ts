@@ -1,14 +1,14 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
 import type { AbstractAgent } from "@ag-ui/client";
 import { useEffect, useState } from "react";
 
-/** The AG-UI custom event emitted when an A2A Net agent produces an artifact. */
+/** The AG-UI custom event emitted when an Agenta agent produces an artifact. */
 export const AG_UI_ARTIFACT_EVENT_NAME = "a2anet.adk.artifact";
 
-/** A downloadable file parsed from an A2A Net artifact event. */
+/** A downloadable file parsed from an Agenta artifact event. */
 export interface ReceivedArtifactFile {
     id: string;
     filename: string;
@@ -112,7 +112,7 @@ export function downloadArtifact(file: ReceivedArtifactFile): void {
  * file is attached to the latest assistant message and deduplicated by id when
  * the same thread is replayed after its live run.
  */
-export function useA2ANetArtifacts(
+export function useAgentaArtifacts(
     agent: AbstractAgent,
     threadId: string,
 ): ReadonlyMap<string, ReceivedArtifactFile[]> {

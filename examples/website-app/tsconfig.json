@@ -8,7 +8,7 @@
         "types": ["vite/client"],
         // Against the package's source, so `typecheck` does not need a build first.
         "paths": {
-            "@a2anet/react": ["../../packages/react/src/index.ts"]
+            "@buildagenta/react": ["../../packages/react/src/index.ts"]
         }
     },
     "include": ["server/**/*", "src/**/*", "vite.config.ts"],

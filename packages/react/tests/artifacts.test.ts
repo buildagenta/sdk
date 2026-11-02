@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,7 +13,7 @@ const event = (artifact: Record<string, unknown>, mimeType = "text/csv") => ({
     versionInfo: { mimeType },
 });
 
-describe("A2A Net artifacts", () => {
+describe("Agenta artifacts", () => {
     test("exports the custom event name", () => {
         expect(AG_UI_ARTIFACT_EVENT_NAME).toBe("a2anet.adk.artifact");
     });

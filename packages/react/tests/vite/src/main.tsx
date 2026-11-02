@@ -1,11 +1,11 @@
-import { A2ANetProvider, A2ANetStatus, useA2ANet } from "@a2anet/react";
+import { AgentaProvider, AgentaStatus, useAgenta } from "@buildagenta/react";
 import { CopilotChat, CopilotKitProvider } from "@copilotkit/react-core/v2";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 function Chat() {
-    const { copilotKitProps, status } = useA2ANet();
-    if (status !== A2ANetStatus.Ready) return <span>{status}</span>;
+    const { copilotKitProps, status } = useAgenta();
+    if (status !== AgentaStatus.Ready) return <span>{status}</span>;
 
     return (
         <CopilotKitProvider {...copilotKitProps}>
@@ -19,7 +19,7 @@ if (!root) throw new Error("Missing root element");
 
 createRoot(root).render(
     <StrictMode>
-        <A2ANetProvider
+        <AgentaProvider
             getCredentials={() =>
                 Promise.resolve({
                     token: "browser-token",
@@ -30,6 +30,6 @@ createRoot(root).render(
             }
         >
             <Chat />
-        </A2ANetProvider>
+        </AgentaProvider>
     </StrictMode>,
 );

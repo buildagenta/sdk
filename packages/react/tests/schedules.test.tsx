@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,15 +7,15 @@ import { act, cleanup, render, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 
 import {
-    A2ANetProvider,
-    type A2ANetSchedule,
-    type UseA2ANetSchedulesResult,
-    useA2ANetSchedules,
+    AgentaProvider,
+    type AgentaSchedule,
+    type UseAgentaSchedulesResult,
+    useAgentaSchedules,
 } from "../src/index.js";
 
 const originalFetch = globalThis.fetch;
 
-const SCHEDULE: A2ANetSchedule = {
+const SCHEDULE: AgentaSchedule = {
     id: "schedule-1",
     message: "Send me my daily summary",
     cron: "0 8 * * *",
@@ -29,16 +29,16 @@ const SCHEDULE: A2ANetSchedule = {
     updatedAt: "2026-10-13T09:00:00.000Z",
 };
 
-let current: UseA2ANetSchedulesResult | undefined;
+let current: UseAgentaSchedulesResult | undefined;
 
 function Probe(): ReactNode {
-    current = useA2ANetSchedules();
+    current = useAgentaSchedules();
     return null;
 }
 
 function renderProbe(): void {
     render(
-        <A2ANetProvider
+        <AgentaProvider
             getCredentials={() =>
                 Promise.resolve({
                     token: "customer-token",
@@ -46,10 +46,10 @@ function renderProbe(): void {
                     agentId: "agent-1",
                 })
             }
-            apiUrl="https://api.a2anet.test/api/v1"
+            apiUrl="https://api.buildagenta.test/api/v1"
         >
             <Probe />
-        </A2ANetProvider>,
+        </AgentaProvider>,
     );
 }
 
@@ -59,7 +59,7 @@ afterEach(() => {
     current = undefined;
 });
 
-describe("useA2ANetSchedules", () => {
+describe("useAgentaSchedules", () => {
     test("lists, creates, pauses, and deletes the user's schedules", async () => {
         const requests: Array<{ method: string; url: string; body?: unknown }> = [];
         globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -74,7 +74,7 @@ describe("useA2ANetSchedules", () => {
         renderProbe();
 
         await waitFor(() => expect(current?.schedules).toEqual([SCHEDULE]));
-        expect(requests[0]?.url).toBe("https://api.a2anet.test/api/v1/customer-schedules");
+        expect(requests[0]?.url).toBe("https://api.buildagenta.test/api/v1/customer-schedules");
 
         await act(async () => {
             await current?.createSchedule({ message: "Weekly report", cron: "0 9 * * 1" });
@@ -93,24 +93,24 @@ describe("useA2ANetSchedules", () => {
         expect(requests.slice(1)).toEqual([
             {
                 method: "POST",
-                url: "https://api.a2anet.test/api/v1/customer-schedules",
+                url: "https://api.buildagenta.test/api/v1/customer-schedules",
                 body: { message: "Weekly report", cron: "0 9 * * 1" },
             },
             {
                 method: "PATCH",
-                url: "https://api.a2anet.test/api/v1/customer-schedules/schedule-1",
+                url: "https://api.buildagenta.test/api/v1/customer-schedules/schedule-1",
                 body: { enabled: false },
             },
             {
                 method: "DELETE",
-                url: "https://api.a2anet.test/api/v1/customer-schedules/schedule-2",
+                url: "https://api.buildagenta.test/api/v1/customer-schedules/schedule-2",
                 body: undefined,
             },
         ]);
         expect(current?.schedules).toEqual([{ ...SCHEDULE, enabled: false }]);
     });
 
-    test("reports why A2A Net refused a request", async () => {
+    test("reports why Agenta refused a request", async () => {
         globalThis.fetch = (async (
             _input: RequestInfo | URL,
             _init?: RequestInit,

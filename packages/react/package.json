@@ -1,7 +1,7 @@
 {
-    "name": "@a2anet/react",
+    "name": "@buildagenta/react",
     "version": "0.4.0",
-    "description": "React SDK for A2A Net",
+    "description": "React SDK for Agenta",
     "type": "module",
     "exports": {
         ".": {
@@ -28,17 +28,17 @@
         "react",
         "sdk"
     ],
-    "author": "A2A Net <hello@a2anet.com>",
+    "author": "Agenta <hello@buildagenta.com>",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/a2anet/a2anet-sdk.git",
+        "url": "https://github.com/buildagenta/sdk.git",
         "directory": "packages/react"
     },
     "bugs": {
-        "url": "https://github.com/a2anet/a2anet-sdk/issues"
+        "url": "https://github.com/buildagenta/sdk/issues"
     },
-    "homepage": "https://github.com/a2anet/a2anet-sdk/tree/main/packages/react#readme",
+    "homepage": "https://github.com/buildagenta/sdk/tree/main/packages/react#readme",
     "publishConfig": {
         "access": "public"
     },

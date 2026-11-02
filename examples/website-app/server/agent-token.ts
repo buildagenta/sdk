@@ -1,12 +1,12 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
 /**
  * `POST /api/token` — the one endpoint your backend has to add.
  *
- * The browser connects to A2A Net directly, so it needs a credential of its own.
- * Your A2A Net API key never leaves the server: this endpoint authenticates the
+ * The browser connects to Agenta directly, so it needs a credential of its own.
+ * Your Agenta API key never leaves the server: this endpoint authenticates the
  * user the way the rest of your app already does, then exchanges the key for a
  * short-lived customer token naming that one user to that one agent.
  *
@@ -15,9 +15,9 @@
  * the web `Request`/`Response` types (Next.js route handlers, Hono, Bun.serve).
  */
 
-const A2ANET_API_URL = "https://app.a2anet.com/api/v1";
+const AGENTA_API_URL = "https://app.buildagenta.com/api/v1";
 
-/** Exactly what `@a2anet/react`'s `getCredentials` has to resolve to. */
+/** Exactly what `@buildagenta/react`'s `getCredentials` has to resolve to. */
 export interface AgentToken {
     token: string;
     expiresAt: string;
@@ -43,28 +43,28 @@ const env = (name: string): string => {
 
 /**
  * Mints a customer token for one of your users.
- * @param customerId Your own identifier for the user. A2A Net stores it as given
+ * @param customerId Your own identifier for the user. Agenta stores it as given
  * and never learns anything else about them.
  * @param values Per-customer variables and secrets for this user's runs.
- * @returns The credential `A2ANetProvider` expects.
+ * @returns The credential `AgentaProvider` expects.
  */
 export async function mintAgentToken(
     customerId: string,
     values: RequestValues = {},
 ): Promise<AgentToken> {
-    const agentId = env("A2ANET_AGENT_ID");
+    const agentId = env("AGENTA_AGENT_ID");
 
-    const response = await fetch(`${A2ANET_API_URL}/customer-tokens`, {
+    const response = await fetch(`${AGENTA_API_URL}/customer-tokens`, {
         method: "POST",
         headers: {
-            Authorization: `Bearer ${env("A2ANET_API_KEY")}`,
+            Authorization: `Bearer ${env("AGENTA_API_KEY")}`,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ agentId, customerId, ...values }),
     });
 
     if (!response.ok) {
-        throw new Error(`A2A Net customer token request failed with ${response.status}`);
+        throw new Error(`Agenta customer token request failed with ${response.status}`);
     }
 
     const minted = (await response.json()) as { token: string; expiresAt: string };

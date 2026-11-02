@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -12,7 +12,7 @@ import {
 } from "@ag-ui/client";
 import { lastValueFrom, toArray } from "rxjs";
 
-import { A2ANetAgent, type A2ANetRunContext } from "../src/index.js";
+import { AgentaAgent, type AgentaRunContext } from "../src/index.js";
 
 interface FetchCall {
     url: string;
@@ -24,8 +24,8 @@ interface PendingResponse {
     response: Response;
 }
 
-type ConnectableAgent = A2ANetAgent & {
-    connect: (input: RunAgentInput) => ReturnType<A2ANetAgent["run"]>;
+type ConnectableAgent = AgentaAgent & {
+    connect: (input: RunAgentInput) => ReturnType<AgentaAgent["run"]>;
 };
 
 const encoder = new TextEncoder();
@@ -70,8 +70,8 @@ function eventResponse(events: BaseEvent[]): Response {
     });
 }
 
-function makeAgent(fetch: HttpAgentFetchFn, getContext?: () => A2ANetRunContext): A2ANetAgent {
-    const agent = new A2ANetAgent({
+function makeAgent(fetch: HttpAgentFetchFn, getContext?: () => AgentaRunContext): AgentaAgent {
+    const agent = new AgentaAgent({
         agentId: "agent-1",
         url: "https://runtime.example/agent-1/ag-ui",
         getContext,
@@ -80,7 +80,7 @@ function makeAgent(fetch: HttpAgentFetchFn, getContext?: () => A2ANetRunContext)
     return agent;
 }
 
-describe("A2ANetAgent", () => {
+describe("AgentaAgent", () => {
     test("sends only the trailing user turn while retaining the local transcript", () => {
         const pending = pendingResponse();
         const calls: FetchCall[] = [];

@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Build package
-        run: bun --filter '@a2anet/react' build
+        run: bun --filter '@buildagenta/react' build
       - name: Upload distribution artifacts
         uses: actions/upload-artifact@v4
         with:

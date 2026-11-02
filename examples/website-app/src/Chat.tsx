@@ -1,9 +1,9 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * One view of the conversation: CopilotChat, plus what A2A Net adds to it.
+ * One view of the conversation: CopilotChat, plus what Agenta adds to it.
  *
  * The agent's files arrive as events rather than messages, so they are rendered under
  * the reply they followed. Its thumbs record feedback for the agent's owner, and a
@@ -11,11 +11,11 @@
  */
 
 import {
-    type A2ANetFeedback,
+    type AgentaFeedback,
     downloadArtifact,
-    useA2ANetArtifacts,
-    useA2ANetFeedback,
-} from "@a2anet/react";
+    useAgentaArtifacts,
+    useAgentaFeedback,
+} from "@buildagenta/react";
 import {
     CopilotChat,
     CopilotChatAssistantMessage,
@@ -26,7 +26,7 @@ import { type ReactElement, useMemo, useState } from "react";
 
 interface Rated {
     messageId: string;
-    value: A2ANetFeedback["value"];
+    value: AgentaFeedback["value"];
 }
 
 function FeedbackForm({
@@ -66,18 +66,18 @@ function FeedbackForm({
 
 export function Chat({ agentId, threadId }: { agentId: string; threadId: string }): ReactElement {
     const { agent } = useAgent({ agentId, updates: [] });
-    const artifacts = useA2ANetArtifacts(agent, threadId);
-    const rate = useA2ANetFeedback();
+    const artifacts = useAgentaArtifacts(agent, threadId);
+    const rate = useAgentaFeedback();
     const [rated, setRated] = useState<Rated | null>(null);
 
     // Object.assign carries over the slot's static members, which its type requires.
     const assistantMessage = useMemo(() => {
-        const send = (messageId: string, feedback: A2ANetFeedback): void => {
+        const send = (messageId: string, feedback: AgentaFeedback): void => {
             rate(messageId, feedback).catch((error: unknown) => {
                 console.error("[assistant]", error);
             });
         };
-        const thumb = (messageId: string, value: A2ANetFeedback["value"]): void => {
+        const thumb = (messageId: string, value: AgentaFeedback["value"]): void => {
             // The thumb counts on its own; the text, if any, replaces it with more.
             send(messageId, { value });
             setRated({ messageId, value });

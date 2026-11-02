@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -6,10 +6,10 @@
  * The user's past conversations: the ones they started, and the ones a schedule did.
  */
 
-import { type A2ANetThreadType, useA2ANetThreads } from "@a2anet/react";
+import { type AgentaThreadType, useAgentaThreads } from "@buildagenta/react";
 import { type ReactElement, useState } from "react";
 
-const TABS: Array<{ type: A2ANetThreadType; label: string }> = [
+const TABS: Array<{ type: AgentaThreadType; label: string }> = [
     { type: "user", label: "Chats" },
     { type: "scheduled", label: "Scheduled" },
 ];
@@ -25,8 +25,8 @@ export function Threads({
     onSelect: (threadId: string) => void;
     onNew: () => void;
 }): ReactElement {
-    const { threads, isLoading, error } = useA2ANetThreads({ agentId });
-    const [type, setType] = useState<A2ANetThreadType>("user");
+    const { threads, isLoading, error } = useAgentaThreads({ agentId });
+    const [type, setType] = useState<AgentaThreadType>("user");
     const shown = threads.filter((thread) => thread.type === type);
 
     return (

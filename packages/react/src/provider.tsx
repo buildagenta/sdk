@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -16,7 +16,7 @@ import {
     useState,
 } from "react";
 
-import { A2ANetAgent, type A2ANetRunContext } from "./agent.js";
+import { AgentaAgent, type AgentaRunContext } from "./agent.js";
 
 /** Life left below which a credential is replaced rather than used. */
 const MINT_MARGIN_MS = 5 * 60 * 1000;
@@ -29,13 +29,13 @@ const MINT_MARGIN_MS = 5 * 60 * 1000;
  */
 const RETRY_DELAYS_MS = [1_000, 2_000, 4_000, 8_000, 16_000, 32_000, 64_000];
 
-/** Where A2A Net runs agents. Fixed, so minting a token cannot change it. */
-export const A2ANET_RUNTIME_URL = "https://agent.a2anet.com";
-/** A2A Net's own API, which holds what a customer sets up around their conversations. */
-export const A2ANET_API_URL = "https://app.a2anet.com/api/v1";
+/** Where Agenta runs agents. Fixed, so minting a token cannot change it. */
+export const AGENTA_RUNTIME_URL = "https://agent.buildagenta.com";
+/** Agenta's own API, which holds what a customer sets up around their conversations. */
+export const AGENTA_API_URL = "https://app.buildagenta.com/api/v1";
 
-/** Credentials minted by an application's backend for direct A2A Net access. */
-export interface A2ANetCredentials {
+/** Credentials minted by an application's backend for direct Agenta access. */
+export interface AgentaCredentials {
     token: string;
     expiresAt: string;
     /** The token is minted for one agent, so the server that mints it names it. */
@@ -43,45 +43,45 @@ export interface A2ANetCredentials {
 }
 
 /** Runtime values returned for a normal CopilotKit provider. */
-export interface A2ANetCopilotKitProps
+export interface AgentaCopilotKitProps
     extends Omit<CopilotKitProviderProps, "children" | "runtimeUrl"> {
     runtimeUrl?: string;
     /** The agent name used by CopilotKit integrations that support a default agent prop. */
     agent?: string;
 }
 
-/** A2A Net credential lifecycle states. */
-export const A2ANetStatus = {
+/** Agenta credential lifecycle states. */
+export const AgentaStatus = {
     Loading: "loading",
     Ready: "ready",
     Error: "error",
 } as const;
 
-/** The current A2A Net credential lifecycle state. */
-export type A2ANetStatus = (typeof A2ANetStatus)[keyof typeof A2ANetStatus];
+/** The current Agenta credential lifecycle state. */
+export type AgentaStatus = (typeof AgentaStatus)[keyof typeof AgentaStatus];
 
-/** Properties accepted by {@link A2ANetProvider}. */
-export interface A2ANetProviderProps {
+/** Properties accepted by {@link AgentaProvider}. */
+export interface AgentaProviderProps {
     children: ReactNode;
-    getCredentials: () => Promise<A2ANetCredentials>;
+    getCredentials: () => Promise<AgentaCredentials>;
     /** Read on every run, so a caller may return whatever its current page holds. */
-    getContext?: () => A2ANetRunContext;
+    getContext?: () => AgentaRunContext;
     /** Overridden only for local development against a runtime of your own. */
     runtimeUrl?: string;
     /** Overridden only for local development against an API of your own. */
     apiUrl?: string;
 }
 
-/** Values exposed by {@link useA2ANet}. */
-export interface A2ANetContextValue {
-    agent: A2ANetAgent | null;
-    copilotKitProps: A2ANetCopilotKitProps;
-    status: A2ANetStatus;
+/** Values exposed by {@link useAgenta}. */
+export interface AgentaContextValue {
+    agent: AgentaAgent | null;
+    copilotKitProps: AgentaCopilotKitProps;
+    status: AgentaStatus;
     /** A failed refresh reports its error while the current credential keeps working. */
     error: Error | null;
     retry: () => void;
     /** Fetch with a current customer credential. */
-    authenticatedFetch: A2ANetFetch;
+    authenticatedFetch: AgentaFetch;
     apiUrl: string;
     /**
      * Replace the current credential if it is spent, and resolve once one is usable.
@@ -93,24 +93,24 @@ export interface A2ANetContextValue {
     checkAndMintCredentials: () => Promise<void>;
 }
 
-/** A browser-compatible fetch function authenticated with an A2A Net customer token. */
-export type A2ANetFetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+/** A browser-compatible fetch function authenticated with an Agenta customer token. */
+export type AgentaFetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 interface ProviderState {
-    agent: A2ANetAgent | null;
-    credentials: A2ANetCredentials | null;
-    status: A2ANetStatus;
+    agent: AgentaAgent | null;
+    credentials: AgentaCredentials | null;
+    status: AgentaStatus;
     error: Error | null;
 }
 
-const A2ANetContext = createContext<A2ANetContextValue | null>(null);
+const AgentaContext = createContext<AgentaContextValue | null>(null);
 
 function errorFrom(value: unknown): Error {
     return value instanceof Error ? value : new Error(String(value));
 }
 
 /** Milliseconds of life left in a credential; zero for one already spent or unreadable. */
-function expiresIn(credentials: A2ANetCredentials): number {
+function expiresIn(credentials: AgentaCredentials): number {
     const remaining = new Date(credentials.expiresAt).getTime() - Date.now();
     return Number.isFinite(remaining) ? Math.max(remaining, 0) : 0;
 }
@@ -120,7 +120,7 @@ function agentUrl(runtimeUrl: string, agentId: string): string {
 }
 
 /**
- * Load and replace A2A Net credentials while keeping one agent instance alive.
+ * Load and replace Agenta credentials while keeping one agent instance alive.
  *
  * The provider gives the agent a `fetch` of its own, so `checkAndMintCredentials` runs
  * ahead of every request the agent makes and a spent token is replaced by the next thing
@@ -131,30 +131,30 @@ function agentUrl(runtimeUrl: string, agentId: string): string {
  * The provider only supplies integration state; it always renders its children and
  * never mounts CopilotKit or application UI itself.
  */
-export function A2ANetProvider({
+export function AgentaProvider({
     children,
     getCredentials,
     getContext,
-    runtimeUrl = A2ANET_RUNTIME_URL,
-    apiUrl = A2ANET_API_URL,
-}: A2ANetProviderProps): ReactElement {
-    const agentRef = useRef<A2ANetAgent | null>(null);
+    runtimeUrl = AGENTA_RUNTIME_URL,
+    apiUrl = AGENTA_API_URL,
+}: AgentaProviderProps): ReactElement {
+    const agentRef = useRef<AgentaAgent | null>(null);
     const getContextRef = useRef(getContext);
     const getCredentialsRef = useRef(getCredentials);
-    const credentialsRef = useRef<A2ANetCredentials | null>(null);
-    const pendingRef = useRef<Promise<A2ANetCredentials> | null>(null);
+    const credentialsRef = useRef<AgentaCredentials | null>(null);
+    const pendingRef = useRef<Promise<AgentaCredentials> | null>(null);
     const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
     const attemptRef = useRef(0);
     const activeRef = useRef(true);
     // The agent's fetch mints through `checkAndMintCredentials`, which is defined after
     // the agent that uses it; the ref ties that knot without rebuilding either one.
-    const checkAndMintRef = useRef<() => Promise<A2ANetCredentials>>(() =>
-        Promise.reject(new Error("A2A Net credentials are not loading yet")),
+    const checkAndMintRef = useRef<() => Promise<AgentaCredentials>>(() =>
+        Promise.reject(new Error("Agenta credentials are not loading yet")),
     );
     const [state, setState] = useState<ProviderState>({
         agent: null,
         credentials: null,
-        status: A2ANetStatus.Loading,
+        status: AgentaStatus.Loading,
         error: null,
     });
 
@@ -172,7 +172,7 @@ export function A2ANetProvider({
         timerRef.current = setTimeout(action, Math.max(delay, 0));
     }, []);
 
-    const authenticatedFetch = useCallback<A2ANetFetch>(async (input, init) => {
+    const authenticatedFetch = useCallback<AgentaFetch>(async (input, init) => {
         const { token } = await checkAndMintRef.current();
         const headers = new Headers(init?.headers);
         headers.set("Authorization", `Bearer ${token}`);
@@ -180,12 +180,12 @@ export function A2ANetProvider({
     }, []);
 
     const buildAgent = useCallback(
-        (credentials: A2ANetCredentials): A2ANetAgent => {
+        (credentials: AgentaCredentials): AgentaAgent => {
             const headers = { Authorization: `Bearer ${credentials.token}` };
             const url = agentUrl(runtimeUrl, credentials.agentId);
             const agent =
                 agentRef.current ??
-                new A2ANetAgent({
+                new AgentaAgent({
                     agentId: credentials.agentId,
                     url,
                     headers,
@@ -205,8 +205,8 @@ export function A2ANetProvider({
     // the body: a `getCredentials` that throws synchronously would otherwise run the
     // body to completion before the assignment, pinning that failure here for every
     // later request to read back.
-    const load = useCallback((): Promise<A2ANetCredentials> => {
-        pendingRef.current ??= (async (): Promise<A2ANetCredentials> => {
+    const load = useCallback((): Promise<AgentaCredentials> => {
+        pendingRef.current ??= (async (): Promise<AgentaCredentials> => {
             try {
                 const credentials = await getCredentialsRef.current();
                 if (!activeRef.current) return credentials;
@@ -216,7 +216,7 @@ export function A2ANetProvider({
                 setState({
                     agent: buildAgent(credentials),
                     credentials,
-                    status: A2ANetStatus.Ready,
+                    status: AgentaStatus.Ready,
                     error: null,
                 });
                 clearTimeout(timerRef.current);
@@ -231,7 +231,7 @@ export function A2ANetProvider({
                 setState((previous) => ({
                     ...previous,
                     status:
-                        current && expiresIn(current) > 0 ? previous.status : A2ANetStatus.Error,
+                        current && expiresIn(current) > 0 ? previous.status : AgentaStatus.Error,
                     error,
                 }));
 
@@ -250,7 +250,7 @@ export function A2ANetProvider({
         return pendingRef.current;
     }, [buildAgent, schedule]);
 
-    const checkAndMintCredentials = useCallback(async (): Promise<A2ANetCredentials> => {
+    const checkAndMintCredentials = useCallback(async (): Promise<AgentaCredentials> => {
         const current = credentialsRef.current;
         if (current && expiresIn(current) > MINT_MARGIN_MS) return current;
 
@@ -292,7 +292,7 @@ export function A2ANetProvider({
         () => (agent && agentId ? { [agentId]: agent } : undefined),
         [agent, agentId],
     );
-    const copilotKitProps = useMemo<A2ANetCopilotKitProps>(() => {
+    const copilotKitProps = useMemo<AgentaCopilotKitProps>(() => {
         if (!agent || !credentials || !selfManagedAgents) return {};
         return {
             runtimeUrl,
@@ -302,7 +302,7 @@ export function A2ANetProvider({
             selfManagedAgents,
         };
     }, [agent, credentials, runtimeUrl, selfManagedAgents]);
-    const context = useMemo<A2ANetContextValue>(
+    const context = useMemo<AgentaContextValue>(
         () => ({
             agent,
             copilotKitProps,
@@ -325,12 +325,12 @@ export function A2ANetProvider({
         ],
     );
 
-    return createElement(A2ANetContext.Provider, { value: context }, children);
+    return createElement(AgentaContext.Provider, { value: context }, children);
 }
 
-/** Read the nearest A2A Net provider's CopilotKit properties and credential status. */
-export function useA2ANet(): A2ANetContextValue {
-    const context = useContext(A2ANetContext);
-    if (!context) throw new Error("useA2ANet must be used within an A2ANetProvider");
+/** Read the nearest Agenta provider's CopilotKit properties and credential status. */
+export function useAgenta(): AgentaContextValue {
+    const context = useContext(AgentaContext);
+    if (!context) throw new Error("useAgenta must be used within an AgentaProvider");
     return context;
 }

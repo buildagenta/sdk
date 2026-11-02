@@ -7,7 +7,7 @@
         "build": "bun --filter './packages/*' build",
         "check": "biome check .",
         "check:fix": "biome check --write .",
-        "typecheck": "bun --filter '@a2anet/*' typecheck",
+        "typecheck": "bun --filter '@buildagenta/*' typecheck",
         "test": "bun --filter './packages/*' test",
         "test:coverage": "bun --filter './packages/*' test:coverage"
     },

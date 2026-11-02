@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,12 +11,12 @@
  */
 
 import {
-    type A2ANetCredentials,
-    A2ANetProvider,
-    type A2ANetRunContext,
-    A2ANetStatus,
-    useA2ANet,
-} from "@a2anet/react";
+    type AgentaCredentials,
+    AgentaProvider,
+    type AgentaRunContext,
+    AgentaStatus,
+    useAgenta,
+} from "@buildagenta/react";
 import { CopilotKitProvider } from "@copilotkit/react-core/v2";
 import { type ReactNode, useCallback } from "react";
 
@@ -30,9 +30,9 @@ const TOKEN_URL = "/api/token";
  * the conversation survives a failed token refresh.
  */
 function AssistantConversation({ children }: { children: ReactNode }) {
-    const { copilotKitProps, status } = useA2ANet();
+    const { copilotKitProps, status } = useAgenta();
 
-    if (status !== A2ANetStatus.Ready) return <>{children}</>;
+    if (status !== AgentaStatus.Ready) return <>{children}</>;
 
     return (
         <CopilotKitProvider
@@ -49,24 +49,24 @@ function AssistantConversation({ children }: { children: ReactNode }) {
 export function AssistantProvider({ children }: { children: ReactNode }) {
     // Send whatever your backend needs to authenticate the user, exactly as any
     // other request from your app does.
-    const getCredentials = useCallback(async (): Promise<A2ANetCredentials> => {
+    const getCredentials = useCallback(async (): Promise<AgentaCredentials> => {
         const response = await fetch(TOKEN_URL, { method: "POST" });
         if (!response.ok) {
             throw new Error(`Agent token request failed with ${response.status}`);
         }
-        return (await response.json()) as A2ANetCredentials;
+        return (await response.json()) as AgentaCredentials;
     }, []);
 
     // Read once per run, so the agent always sees the page the user is on now
     // rather than the page they were on when the provider mounted.
     const getContext = useCallback(
-        (): A2ANetRunContext => ({ today: new Date().toISOString().slice(0, 10) }),
+        (): AgentaRunContext => ({ today: new Date().toISOString().slice(0, 10) }),
         [],
     );
 
     return (
-        <A2ANetProvider getCredentials={getCredentials} getContext={getContext}>
+        <AgentaProvider getCredentials={getCredentials} getContext={getContext}>
             <AssistantConversation>{children}</AssistantConversation>
-        </A2ANetProvider>
+        </AgentaProvider>
     );
 }
