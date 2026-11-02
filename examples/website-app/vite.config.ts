@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,7 +10,7 @@ import { handleAgentTokenRequest } from "./server/agent-token.js";
 
 // Only because the package lives in this repository: pointed at its source, so
 // `bun run dev` needs no build first. Your own app installs it from npm.
-const A2ANET_REACT_SRC = fileURLToPath(
+const AGENTA_REACT_SRC = fileURLToPath(
     new URL("../../packages/react/src/index.ts", import.meta.url),
 );
 
@@ -49,10 +49,10 @@ function agentTokenEndpoint(): Plugin {
 export default defineConfig(({ mode }) => {
     // Read in this process, by the middleware above. `loadEnv` rather than
     // `import.meta.env`, so the API key cannot reach the browser bundle.
-    Object.assign(process.env, loadEnv(mode, process.cwd(), "A2ANET_"));
+    Object.assign(process.env, loadEnv(mode, process.cwd(), "AGENTA_"));
 
     return {
         plugins: [react(), agentTokenEndpoint()],
-        resolve: { alias: { "@a2anet/react": A2ANET_REACT_SRC } },
+        resolve: { alias: { "@buildagenta/react": AGENTA_REACT_SRC } },
     };
 });

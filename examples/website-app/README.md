@@ -1,16 +1,16 @@
 # Website/App Example
 
-An example website/app that uses the A2A Net SDK. It is a runnable Vite app with one
-backend endpoint and one React provider, showing how to put an A2A Net agent in front of
+An example website/app that uses the Agenta SDK. It is a runnable Vite app with one
+backend endpoint and one React provider, showing how to put an Agenta agent in front of
 your own customers.
 
 ## The contract
 
-For performance reasons, the chat sidebar connects to A2A Net from the browser without
-going through a server-side endpoint or proxy. For browsers to authenticate with A2A Net,
+For performance reasons, the chat sidebar connects to Agenta from the browser without
+going through a server-side endpoint or proxy. For browsers to authenticate with Agenta,
 they use a short-lived JWT token.
 
-Your backend mints one with your A2A Net API key, which never leaves the server:
+Your backend mints one with your Agenta API key, which never leaves the server:
 
 ```ts
 {
@@ -23,7 +23,7 @@ Your backend mints one with your A2A Net API key, which never leaves the server:
 The endpoint is `POST /api/token` here, and the path is yours to choose — the browser only
 has to reach it, and `AssistantProvider` is where it is named.
 
-`A2ANetProvider` calls `getCredentials` on mount, and again whenever the token it holds is
+`AgentaProvider` calls `getCredentials` on mount, and again whenever the token it holds is
 spent.
 
 ## Files
@@ -31,7 +31,7 @@ spent.
 | File                        | What it is                                                     |
 | --------------------------- | -------------------------------------------------------------- |
 | `server/agent-token.ts`     | `POST /api/token`. Authenticates the user, mints the token     |
-| `src/AssistantProvider.tsx` | `A2ANetProvider` + `useA2ANet` + CopilotKit                    |
+| `src/AssistantProvider.tsx` | `AgentaProvider` + `useAgenta` + CopilotKit                    |
 | `src/App.tsx`               | The page, with a full chat and a collapsible sidebar           |
 | `src/Chat.tsx`              | CopilotChat with the agent's files, feedback and attachments   |
 | `src/Threads.tsx`           | The user's chats and scheduled chats                           |
@@ -44,8 +44,8 @@ Server side only — neither belongs in the browser bundle:
 
 | Variable          | What it is                                                           |
 | ----------------- | -------------------------------------------------------------------- |
-| `A2ANET_API_KEY`  | A standard user API key, minted at <https://app.a2anet.com/api-keys> |
-| `A2ANET_AGENT_ID` | The agent, from its Publish page                                     |
+| `AGENTA_API_KEY`  | A standard user API key, minted at <https://app.buildagenta.com/api-keys> |
+| `AGENTA_AGENT_ID` | The agent, from its Publish page                                     |
 
 ## Running it
 
@@ -56,7 +56,7 @@ bun run dev
 ```
 
 The page opens with the agent in the middle and the same conversation in a sidebar you can
-hide. Send a message and it appears under Sessions on <https://app.a2anet.com>, with any 👍
+hide. Send a message and it appears under Sessions on <https://app.buildagenta.com>, with any 👍
 or 👎 under the reply it rates. The sidebar's History lists past chats, including ones a
 schedule started, and Schedules sets up messages the agent receives on a cron schedule.
 
@@ -77,6 +77,6 @@ await mintAgentToken(user.id, {
 });
 ```
 
-The agent's tools resolve both by name. A2A Net stores them against this customer rather
+The agent's tools resolve both by name. Agenta stores them against this customer rather
 than putting them in the token, so the browser holding that token can neither read them nor
 substitute its own.

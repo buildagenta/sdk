@@ -1,24 +1,24 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
 import { useCallback, useEffect, useState } from "react";
 
-import { useA2ANet } from "./provider.js";
+import { useAgenta } from "./provider.js";
 
 /** Where a scheduled chat's reply is sent, besides its own thread. */
-export type A2ANetScheduleDelivery =
+export type AgentaScheduleDelivery =
     | { platform: "email" }
     | { platform: "slack"; channel?: { id: string; name: string } };
 
-/** A message A2A Net sends the agent on the user's behalf, on a cron schedule. */
-export interface A2ANetSchedule {
+/** A message Agenta sends the agent on the user's behalf, on a cron schedule. */
+export interface AgentaSchedule {
     id: string;
     message: string;
     cron: string;
     timeZone: string;
     enabled: boolean;
-    sendResponseTo: A2ANetScheduleDelivery | null;
+    sendResponseTo: AgentaScheduleDelivery | null;
     nextRunAt: string | null;
     lastRunAt: string | null;
     lastError: string | null;
@@ -27,7 +27,7 @@ export interface A2ANetSchedule {
 }
 
 /** What creating a schedule sets. The time zone defaults to the user's profile, then UTC. */
-export interface A2ANetScheduleInput {
+export interface AgentaScheduleInput {
     message: string;
     cron: string;
     timeZone?: string;
@@ -39,28 +39,28 @@ export interface A2ANetScheduleInput {
         | null;
 }
 
-/** Schedule state and operations returned by {@link useA2ANetSchedules}. */
-export interface UseA2ANetSchedulesResult {
-    schedules: A2ANetSchedule[];
+/** Schedule state and operations returned by {@link useAgentaSchedules}. */
+export interface UseAgentaSchedulesResult {
+    schedules: AgentaSchedule[];
     isLoading: boolean;
     error: Error | null;
     refetchSchedules: () => Promise<void>;
-    createSchedule: (input: A2ANetScheduleInput) => Promise<A2ANetSchedule>;
+    createSchedule: (input: AgentaScheduleInput) => Promise<AgentaSchedule>;
     /** Also pauses or resumes one, through `enabled`. */
-    updateSchedule: (id: string, changes: Partial<A2ANetScheduleInput>) => Promise<A2ANetSchedule>;
+    updateSchedule: (id: string, changes: Partial<AgentaScheduleInput>) => Promise<AgentaSchedule>;
     deleteSchedule: (id: string) => Promise<void>;
 }
 
 /**
  * List and manage the user's scheduled chats with the agent.
  *
- * The customer token names the user and the agent, so A2A Net confines every request to
- * their own schedules. A run a schedule starts appears in `useA2ANetThreads` with the type
+ * The customer token names the user and the agent, so Agenta confines every request to
+ * their own schedules. A run a schedule starts appears in `useAgentaThreads` with the type
  * `"scheduled"`.
  */
-export function useA2ANetSchedules(): UseA2ANetSchedulesResult {
-    const { apiUrl, authenticatedFetch } = useA2ANet();
-    const [schedules, setSchedules] = useState<A2ANetSchedule[]>([]);
+export function useAgentaSchedules(): UseAgentaSchedulesResult {
+    const { apiUrl, authenticatedFetch } = useAgenta();
+    const [schedules, setSchedules] = useState<AgentaSchedule[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
@@ -72,12 +72,12 @@ export function useA2ANetSchedules(): UseA2ANetSchedulesResult {
                 body: body === undefined ? undefined : JSON.stringify(body),
             });
             if (!response.ok) {
-                // A2A Net explains a refused schedule, such as a cron it cannot honour.
+                // Agenta explains a refused schedule, such as a cron it cannot honour.
                 const failure = (await response.json().catch(() => null)) as {
                     error?: { message?: string };
                 } | null;
                 throw new Error(
-                    failure?.error?.message ?? `A2A Net request failed with ${response.status}`,
+                    failure?.error?.message ?? `Agenta request failed with ${response.status}`,
                 );
             }
             return (response.status === 204 ? undefined : await response.json()) as T;
@@ -88,7 +88,7 @@ export function useA2ANetSchedules(): UseA2ANetSchedulesResult {
     const refetchSchedules = useCallback(async (): Promise<void> => {
         setIsLoading(true);
         try {
-            const listed = await request<{ schedules: A2ANetSchedule[] }>("", "GET");
+            const listed = await request<{ schedules: AgentaSchedule[] }>("", "GET");
             setSchedules(listed.schedules);
             setError(null);
         } catch (value) {
@@ -103,9 +103,9 @@ export function useA2ANetSchedules(): UseA2ANetSchedulesResult {
     }, [refetchSchedules]);
 
     const createSchedule = useCallback(
-        async (input: A2ANetScheduleInput): Promise<A2ANetSchedule> => {
-            const created = await request<A2ANetSchedule>("", "POST", input);
-            // A2A Net lists the newest first.
+        async (input: AgentaScheduleInput): Promise<AgentaSchedule> => {
+            const created = await request<AgentaSchedule>("", "POST", input);
+            // Agenta lists the newest first.
             setSchedules((previous) => [created, ...previous]);
             return created;
         },
@@ -113,8 +113,8 @@ export function useA2ANetSchedules(): UseA2ANetSchedulesResult {
     );
 
     const updateSchedule = useCallback(
-        async (id: string, changes: Partial<A2ANetScheduleInput>): Promise<A2ANetSchedule> => {
-            const updated = await request<A2ANetSchedule>(
+        async (id: string, changes: Partial<AgentaScheduleInput>): Promise<AgentaSchedule> => {
+            const updated = await request<AgentaSchedule>(
                 `/${encodeURIComponent(id)}`,
                 "PATCH",
                 changes,

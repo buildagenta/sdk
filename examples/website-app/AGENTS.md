@@ -1,6 +1,6 @@
 # Applying this example
 
-Instructions for a coding agent adding an A2A Net assistant to an existing website
+Instructions for a coding agent adding an Agenta assistant to an existing website
 or app. Read `README.md` first for the contract.
 
 ## 1. Add the token endpoint
@@ -24,15 +24,15 @@ the request body. The whole point is that the server decides who the caller is.
 
 ## 2. Add the environment variables
 
-`A2ANET_API_KEY` and `A2ANET_AGENT_ID`, as described in `README.md`. Server-side
-only: an `A2ANET_API_KEY` that reaches the browser bundle is a leaked credential.
+`AGENTA_API_KEY` and `AGENTA_AGENT_ID`, as described in `README.md`. Server-side
+only: an `AGENTA_API_KEY` that reaches the browser bundle is a leaked credential.
 In a framework that prefixes public variables (`NEXT_PUBLIC_`, `VITE_`), neither
 takes that prefix.
 
 ## 3. Add the provider
 
 ```bash
-npm install @a2anet/react @ag-ui/client @copilotkit/react-core @copilotkit/react-ui
+npm install @buildagenta/react @ag-ui/client @copilotkit/react-core @copilotkit/react-ui
 ```
 
 Copy `src/AssistantProvider.tsx` in and mount it **above** anything that can
@@ -40,7 +40,7 @@ unmount — the drawer, modal or route the chat lives in. It holds the agent, wh
 owns the conversation, so mounting it inside a drawer starts a new thread every
 time the drawer closes.
 
-Render CopilotKit's chat UI inside it, as `src/App.tsx` does. `useA2ANet` gives you
+Render CopilotKit's chat UI inside it, as `src/App.tsx` does. `useAgenta` gives you
 `copilotKitProps`, `status`, `error` and `retry`; the SDK deliberately does not
 mount CopilotKit, so the loading and error UI stays the app's own. Two chats in
 one provider are two views of one conversation, which is what makes a full page
@@ -53,5 +53,5 @@ an ordinary request to the app's own backend.
 ## 4. Check it
 
 Send a message from the app. The conversation appears under Sessions on
-<https://app.a2anet.com>, and the agent's Publish page reports Website/App as
+<https://app.buildagenta.com>, and the agent's Publish page reports Website/App as
 published once it has.

@@ -1,6 +1,6 @@
-# A2A Net SDKs
+# Agenta SDKs
 
-JavaScript and TypeScript SDKs for [A2A Net](https://a2anet.com), which hosts agents your
+JavaScript and TypeScript SDKs for [Agenta](https://buildagenta.com), which hosts agents your
 product can put in front of its own customers.
 
 This repository is a [Bun](https://bun.sh/) workspace. It is set up to publish the React
@@ -10,7 +10,7 @@ SDK, while leaving room for other JavaScript framework packages.
 
 | Package                             | Description           |
 | ----------------------------------- | --------------------- |
-| [`@a2anet/react`](./packages/react) | React SDK for A2A Net |
+| [`@buildagenta/react`](./packages/react) | React SDK for Agenta |
 
 An example app that uses the React SDK end to end is in
 [`examples/website-app`](./examples/website-app).

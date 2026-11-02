@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,7 +11,7 @@
  * history and their scheduled chats.
  */
 
-import { A2ANetStatus, useA2ANet } from "@a2anet/react";
+import { AgentaStatus, useAgenta } from "@buildagenta/react";
 import { type ReactElement, useState } from "react";
 
 import { AssistantProvider } from "./AssistantProvider.js";
@@ -28,16 +28,16 @@ const PANELS: Array<{ panel: Panel; label: string }> = [
 ];
 
 function Page(): ReactElement {
-    const { copilotKitProps, status, error, retry } = useA2ANet();
+    const { copilotKitProps, status, error, retry } = useAgenta();
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [panel, setPanel] = useState<Panel>("chat");
     const [threadId, setThreadId] = useState<string>(() => crypto.randomUUID());
 
-    if (status === A2ANetStatus.Loading) return <p className="notice">Connecting…</p>;
-    if (status === A2ANetStatus.Error || !copilotKitProps.agent) {
+    if (status === AgentaStatus.Loading) return <p className="notice">Connecting…</p>;
+    if (status === AgentaStatus.Error || !copilotKitProps.agent) {
         return (
             <p className="notice">
-                {error?.message ?? "Could not reach A2A Net"}{" "}
+                {error?.message ?? "Could not reach Agenta"}{" "}
                 <button type="button" onClick={retry}>
                     Try again
                 </button>

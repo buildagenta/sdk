@@ -11,10 +11,10 @@
       },
     },
     "examples/website-app": {
-      "name": "@a2anet/website-app-example",
+      "name": "@buildagenta/website-app-example",
       "version": "0.0.0",
       "dependencies": {
-        "@a2anet/react": "workspace:*",
+        "@buildagenta/react": "workspace:*",
         "@ag-ui/client": "^0.0.57",
         "@copilotkit/react-core": "^1.62.3",
         "@copilotkit/react-ui": "^1.62.3",
@@ -29,7 +29,7 @@
       },
     },
     "packages/react": {
-      "name": "@a2anet/react",
+      "name": "@buildagenta/react",
       "version": "0.3.0",
       "dependencies": {
         "@copilotkit/core": "1.62.3",
@@ -57,9 +57,9 @@
   "packages": {
     "@0no-co/graphql.web": ["@0no-co/graphql.web@1.3.3", "", { "peerDependencies": { "graphql": "^14.0.0 || ^15.0.0 || ^16.0.0" }, "optionalPeers": ["graphql"] }, "sha512-4gFGBdyaFmQ6n9euhp5JtIGS4ZeivwDr1tCPENUxTvy5wyv532yOtFCr9zzYAJh1s6uibgC+TRXUcay+mxzCoQ=="],
 
-    "@a2anet/react": ["@a2anet/react@workspace:packages/react"],
+    "@buildagenta/react": ["@buildagenta/react@workspace:packages/react"],
 
-    "@a2anet/website-app-example": ["@a2anet/website-app-example@workspace:examples/website-app"],
+    "@buildagenta/website-app-example": ["@buildagenta/website-app-example@workspace:examples/website-app"],
 
     "@a2ui/web_core": ["@a2ui/web_core@0.10.4", "", { "dependencies": { "@preact/signals-core": "^1.14.2", "date-fns": "^4.4.0", "zod": "^3.25.76", "zod-to-json-schema": "^3.25.2" } }, "sha512-sahOUSKZIGv9ZtnHjfzWR8o/F1XfSTp4sQAX5/auSenQYBYDRaY0+vrZIkddc/IEzpXJob6cFJT2r5/mLzAvqg=="],
 
@@ -1153,7 +1153,7 @@
 
     "zwitch": ["zwitch@2.0.4", "", {}, "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A=="],
 
-    "@a2anet/website-app-example/@copilotkit/react-core": ["@copilotkit/react-core@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@ag-ui/core": "0.0.57", "@copilotkit/a2ui-renderer": "1.67.0", "@copilotkit/core": "1.67.0", "@copilotkit/runtime-client-gql": "1.67.0", "@copilotkit/shared": "1.67.0", "@copilotkit/web-components": "1.67.0", "@copilotkit/web-inspector": "1.67.0", "@jetbrains/websandbox": "^1.1.3", "@lit-labs/react": "^2.0.2", "@radix-ui/react-dropdown-menu": "^2.1.15", "@radix-ui/react-slot": "^1.2.3", "@radix-ui/react-tooltip": "^1.2.7", "@scarf/scarf": "^1.3.0", "@tanstack/react-virtual": "^3.13.0", "class-variance-authority": "^0.7.1", "clsx": "^2.1.1", "katex": "^0.16.22", "lit": "^3.3.2", "lucide-react": "^0.525.0", "react-markdown": "^8.0.7", "rxjs": "7.8.1", "streamdown": "^1.3.0", "tailwind-merge": "^3.3.1", "tw-animate-css": "^1.3.5", "untruncate-json": "^0.0.1", "use-stick-to-bottom": "^1.1.1", "zod-to-json-schema": "^3.24.5" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc", "react-dom": "^18 || ^19 || ^19.0.0-rc", "zod": ">=3.0.0" } }, "sha512-ZuD/hg6yJOYOhH4jwmDeBDaLm68gn8wP/5VL0iur20gV//ijfkdquFI5rWoEgXuDioDZpnfQp2Br3FIyVlMkMQ=="],
+    "@buildagenta/website-app-example/@copilotkit/react-core": ["@copilotkit/react-core@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@ag-ui/core": "0.0.57", "@copilotkit/a2ui-renderer": "1.67.0", "@copilotkit/core": "1.67.0", "@copilotkit/runtime-client-gql": "1.67.0", "@copilotkit/shared": "1.67.0", "@copilotkit/web-components": "1.67.0", "@copilotkit/web-inspector": "1.67.0", "@jetbrains/websandbox": "^1.1.3", "@lit-labs/react": "^2.0.2", "@radix-ui/react-dropdown-menu": "^2.1.15", "@radix-ui/react-slot": "^1.2.3", "@radix-ui/react-tooltip": "^1.2.7", "@scarf/scarf": "^1.3.0", "@tanstack/react-virtual": "^3.13.0", "class-variance-authority": "^0.7.1", "clsx": "^2.1.1", "katex": "^0.16.22", "lit": "^3.3.2", "lucide-react": "^0.525.0", "react-markdown": "^8.0.7", "rxjs": "7.8.1", "streamdown": "^1.3.0", "tailwind-merge": "^3.3.1", "tw-animate-css": "^1.3.5", "untruncate-json": "^0.0.1", "use-stick-to-bottom": "^1.1.1", "zod-to-json-schema": "^3.24.5" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc", "react-dom": "^18 || ^19 || ^19.0.0-rc", "zod": ">=3.0.0" } }, "sha512-ZuD/hg6yJOYOhH4jwmDeBDaLm68gn8wP/5VL0iur20gV//ijfkdquFI5rWoEgXuDioDZpnfQp2Br3FIyVlMkMQ=="],
 
     "@copilotkit/react-core/@copilotkit/core": ["@copilotkit/core@1.68.1", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@copilotkit/shared": "1.68.1", "@tanstack/pacer": "^0.20.1", "phoenix": "^1.8.4", "rxjs": "7.8.1", "zod-to-json-schema": "^3.24.6" } }, "sha512-TfSkcyfrTVJJyf6HBDnZ73vqIzXuU75emetsx7IeObXuPaJWLES8Ksj10kTdCUd3H9cYeEgIxFWb16xDDMrB6A=="],
 
@@ -1427,17 +1427,17 @@
 
     "vfile-location/vfile": ["vfile@6.0.3", "", { "dependencies": { "@types/unist": "^3.0.0", "vfile-message": "^4.0.0" } }, "sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q=="],
 
-    "@a2anet/website-app-example/@copilotkit/react-core/@copilotkit/a2ui-renderer": ["@copilotkit/a2ui-renderer@1.67.0", "", { "dependencies": { "@a2ui/web_core": "0.10.4", "clsx": "^2.1.1", "lit": "^3.3.2", "zod": "^3.25.75", "zod-to-json-schema": "^3.24.1" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc", "react-dom": "^18 || ^19 || ^19.0.0-rc" }, "optionalPeers": ["react", "react-dom"] }, "sha512-UbPOgRiJPpQcr6oRUjbMykyuGTUkkjzAh5NDugZX4uD9bW+eQST9/xo5apcxHnJyxn7jMtMIUX5RcljOnCzmIw=="],
+    "@buildagenta/website-app-example/@copilotkit/react-core/@copilotkit/a2ui-renderer": ["@copilotkit/a2ui-renderer@1.67.0", "", { "dependencies": { "@a2ui/web_core": "0.10.4", "clsx": "^2.1.1", "lit": "^3.3.2", "zod": "^3.25.75", "zod-to-json-schema": "^3.24.1" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc", "react-dom": "^18 || ^19 || ^19.0.0-rc" }, "optionalPeers": ["react", "react-dom"] }, "sha512-UbPOgRiJPpQcr6oRUjbMykyuGTUkkjzAh5NDugZX4uD9bW+eQST9/xo5apcxHnJyxn7jMtMIUX5RcljOnCzmIw=="],
 
-    "@a2anet/website-app-example/@copilotkit/react-core/@copilotkit/core": ["@copilotkit/core@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@copilotkit/shared": "1.67.0", "@tanstack/pacer": "^0.20.1", "phoenix": "^1.8.4", "rxjs": "7.8.1", "zod-to-json-schema": "^3.24.6" } }, "sha512-6VXHdvTpWYsWWeZX6pWJi6ERoi3sJxo9tr2nFn2n+H+rFjUY0y0+YZZtx+eernl9tYLWEP243F+Tcohd0m8nYA=="],
+    "@buildagenta/website-app-example/@copilotkit/react-core/@copilotkit/core": ["@copilotkit/core@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@copilotkit/shared": "1.67.0", "@tanstack/pacer": "^0.20.1", "phoenix": "^1.8.4", "rxjs": "7.8.1", "zod-to-json-schema": "^3.24.6" } }, "sha512-6VXHdvTpWYsWWeZX6pWJi6ERoi3sJxo9tr2nFn2n+H+rFjUY0y0+YZZtx+eernl9tYLWEP243F+Tcohd0m8nYA=="],
 
-    "@a2anet/website-app-example/@copilotkit/react-core/@copilotkit/runtime-client-gql": ["@copilotkit/runtime-client-gql@1.67.0", "", { "dependencies": { "@copilotkit/shared": "1.67.0", "@urql/core": "^5.0.3", "untruncate-json": "^0.0.1", "urql": "^4.1.0" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc" } }, "sha512-TuU1ubik2aRP9hc2NPWDBoIvu/DY9jL2zClcyxfnK3H3rhguqfKt0aw25nPm4Gcqg6GeCBoqebYo5VNo/Vma2w=="],
+    "@buildagenta/website-app-example/@copilotkit/react-core/@copilotkit/runtime-client-gql": ["@copilotkit/runtime-client-gql@1.67.0", "", { "dependencies": { "@copilotkit/shared": "1.67.0", "@urql/core": "^5.0.3", "untruncate-json": "^0.0.1", "urql": "^4.1.0" }, "peerDependencies": { "react": "^18 || ^19 || ^19.0.0-rc" } }, "sha512-TuU1ubik2aRP9hc2NPWDBoIvu/DY9jL2zClcyxfnK3H3rhguqfKt0aw25nPm4Gcqg6GeCBoqebYo5VNo/Vma2w=="],
 
-    "@a2anet/website-app-example/@copilotkit/react-core/@copilotkit/shared": ["@copilotkit/shared@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@copilotkit/license-verifier": "~0.5.0", "@segment/analytics-node": "^2.1.2", "@standard-schema/spec": "^1.0.0", "chalk": "4.1.2", "graphql": "^16.8.1", "partial-json": "^0.1.7", "uuid": "^11.1.0", "zod": "^3.23.3", "zod-to-json-schema": "^3.23.5" }, "peerDependencies": { "@ag-ui/core": ">=0.0.48" } }, "sha512-x2NzWKVShA9dirTTlkdXdNcLUYYVIBJM5wnKmyTi98C1LPnTZ/NIl+uRnyVpVhRYYI8BdxirSUCk+pWHPNn7zw=="],
+    "@buildagenta/website-app-example/@copilotkit/react-core/@copilotkit/shared": ["@copilotkit/shared@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@copilotkit/license-verifier": "~0.5.0", "@segment/analytics-node": "^2.1.2", "@standard-schema/spec": "^1.0.0", "chalk": "4.1.2", "graphql": "^16.8.1", "partial-json": "^0.1.7", "uuid": "^11.1.0", "zod": "^3.23.3", "zod-to-json-schema": "^3.23.5" }, "peerDependencies": { "@ag-ui/core": ">=0.0.48" } }, "sha512-x2NzWKVShA9dirTTlkdXdNcLUYYVIBJM5wnKmyTi98C1LPnTZ/NIl+uRnyVpVhRYYI8BdxirSUCk+pWHPNn7zw=="],
 
-    "@a2anet/website-app-example/@copilotkit/react-core/@copilotkit/web-components": ["@copilotkit/web-components@1.67.0", "", { "peerDependencies": { "lit": "^3.3.2" } }, "sha512-cnpYi9LYGDzr0MErDGWSOxP4by6AaqD9hED0w7MJediM8OWPDcm2wZxGCRKwQGSm+KwQSI+F6ceEazstV+SyEA=="],
+    "@buildagenta/website-app-example/@copilotkit/react-core/@copilotkit/web-components": ["@copilotkit/web-components@1.67.0", "", { "peerDependencies": { "lit": "^3.3.2" } }, "sha512-cnpYi9LYGDzr0MErDGWSOxP4by6AaqD9hED0w7MJediM8OWPDcm2wZxGCRKwQGSm+KwQSI+F6ceEazstV+SyEA=="],
 
-    "@a2anet/website-app-example/@copilotkit/react-core/@copilotkit/web-inspector": ["@copilotkit/web-inspector@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@copilotkit/core": "1.67.0", "@copilotkit/shared": "1.67.0", "lit": "^3.2.0", "lucide": "^0.525.0", "marked": "^12.0.2" } }, "sha512-CCtcrCKQ7HEJqXHGcsym5xP3kZsUABQqWcLmV6FjLP7/XqoRvUQS+/Pt9oJJiAXIRHJw6kik7sLpSF2yEUBoow=="],
+    "@buildagenta/website-app-example/@copilotkit/react-core/@copilotkit/web-inspector": ["@copilotkit/web-inspector@1.67.0", "", { "dependencies": { "@ag-ui/client": "0.0.57", "@copilotkit/core": "1.67.0", "@copilotkit/shared": "1.67.0", "lit": "^3.2.0", "lucide": "^0.525.0", "marked": "^12.0.2" } }, "sha512-CCtcrCKQ7HEJqXHGcsym5xP3kZsUABQqWcLmV6FjLP7/XqoRvUQS+/Pt9oJJiAXIRHJw6kik7sLpSF2yEUBoow=="],
 
     "@copilotkit/react-ui/react-markdown/@types/hast": ["@types/hast@3.0.5", "", { "dependencies": { "@types/unist": "*" } }, "sha512-rp/ezSWaD1m44dPKICGhiskI13nVr7qTloFwDa/IYkhhf5nzwP+zIQcIJh3WIFSBOy/H1PzB40jPjMDksN4F+g=="],
 

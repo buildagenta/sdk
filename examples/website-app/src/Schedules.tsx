@@ -1,14 +1,14 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Messages A2A Net sends the agent on the user's behalf, on a cron schedule.
+ * Messages Agenta sends the agent on the user's behalf, on a cron schedule.
  *
  * Each run is a new conversation, listed under Scheduled in the history.
  */
 
-import { type A2ANetSchedule, useA2ANetSchedules } from "@a2anet/react";
+import { type AgentaSchedule, useAgentaSchedules } from "@buildagenta/react";
 import { type FormEvent, type ReactElement, useState } from "react";
 
 const formatRun = (value: string): string =>
@@ -21,7 +21,7 @@ function ScheduleRow({
     onToggle,
     onDelete,
 }: {
-    schedule: A2ANetSchedule;
+    schedule: AgentaSchedule;
     onToggle: () => void;
     onDelete: () => void;
 }): ReactElement {
@@ -49,10 +49,10 @@ function ScheduleRow({
 
 export function Schedules(): ReactElement {
     const { schedules, isLoading, error, createSchedule, updateSchedule, deleteSchedule } =
-        useA2ANetSchedules();
+        useAgentaSchedules();
     const [message, setMessage] = useState("");
     const [cron, setCron] = useState("0 9 * * 1-5");
-    // A2A Net says why it refused a change, such as a cron it cannot honour.
+    // Agenta says why it refused a change, such as a cron it cannot honour.
     const [actionError, setActionError] = useState<string | null>(null);
 
     const perform = async (action: () => Promise<unknown>): Promise<boolean> => {

@@ -1,15 +1,15 @@
 {
-    "name": "@a2anet/website-app-example",
+    "name": "@buildagenta/website-app-example",
     "version": "0.0.0",
     "private": true,
-    "description": "Publishing an A2A Net agent to your own website or app",
+    "description": "Publishing an Agenta agent to your own website or app",
     "type": "module",
     "scripts": {
         "dev": "vite",
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@a2anet/react": "workspace:*",
+        "@buildagenta/react": "workspace:*",
         "@ag-ui/client": "^0.0.57",
         "@copilotkit/react-core": "^1.62.3",
         "@copilotkit/react-ui": "^1.62.3",

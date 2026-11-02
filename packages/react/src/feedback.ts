@@ -1,33 +1,33 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
 import { useCopilotKit } from "@copilotkit/react-core/v2";
 import { useCallback } from "react";
 
-import { useA2ANet } from "./provider.js";
+import { useAgenta } from "./provider.js";
 
 /** A thumbs up (1) or down (0), and optionally what the user said about it. */
-export interface A2ANetFeedback {
+export interface AgentaFeedback {
     value: 0 | 1;
     rationale?: string | null;
 }
 
 /** Records feedback on the turn one message belongs to. */
-export type A2ANetRateMessage = (messageId: string, feedback: A2ANetFeedback) => Promise<void>;
+export type AgentaRateMessage = (messageId: string, feedback: AgentaFeedback) => Promise<void>;
 
 /**
  * Rate the agent's replies, for its owner to read alongside the conversation.
  *
- * A2A Net records feedback per turn rather than per message, so every message in one turn
+ * Agenta records feedback per turn rather than per message, so every message in one turn
  * shares a rating, and rating any of them again replaces it. Wire it to `CopilotChat`'s
  * thumbs, and call it again with the same value to add text the user writes afterwards.
  */
-export function useA2ANetFeedback(): A2ANetRateMessage {
-    const { agent, authenticatedFetch } = useA2ANet();
+export function useAgentaFeedback(): AgentaRateMessage {
+    const { agent, authenticatedFetch } = useAgenta();
     const { copilotkit } = useCopilotKit();
 
-    return useCallback<A2ANetRateMessage>(
+    return useCallback<AgentaRateMessage>(
         async (messageId, { value, rationale = null }) => {
             const { runtimeUrl } = copilotkit;
             if (!runtimeUrl) throw new Error("Runtime URL is not configured");
@@ -43,7 +43,7 @@ export function useA2ANetFeedback(): A2ANetRateMessage {
                 },
             );
             if (!response.ok) {
-                throw new Error(`A2A Net feedback request failed with ${response.status}`);
+                throw new Error(`Agenta feedback request failed with ${response.status}`);
             }
         },
         [agent, authenticatedFetch, copilotkit],

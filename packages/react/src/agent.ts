@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -35,11 +35,11 @@ interface ActiveStream {
  * Empty values are dropped, so a caller can pass whatever its current page holds
  * without filtering first.
  */
-export type A2ANetRunContext = Record<string, string | number | boolean | null | undefined>;
+export type AgentaRunContext = Record<string, string | number | boolean | null | undefined>;
 
-/** Configuration for an A2A Net AG-UI endpoint. */
-export interface A2ANetAgentConfig extends HttpAgentConfig {
-    getContext?: () => A2ANetRunContext;
+/** Configuration for an Agenta AG-UI endpoint. */
+export interface AgentaAgentConfig extends HttpAgentConfig {
+    getContext?: () => AgentaRunContext;
 }
 
 function trailingUserTurn(input: RunAgentInput): RunAgentInput {
@@ -47,7 +47,7 @@ function trailingUserTurn(input: RunAgentInput): RunAgentInput {
     return { ...input, messages: message ? [message] : [] };
 }
 
-function withContext(input: RunAgentInput, context: A2ANetRunContext | undefined): RunAgentInput {
+function withContext(input: RunAgentInput, context: AgentaRunContext | undefined): RunAgentInput {
     const entries = Object.entries(context ?? {})
         .filter(([, value]) => value !== undefined && value !== null && value !== "")
         .map(([description, value]) => ({ description, value: String(value) }));
@@ -60,21 +60,21 @@ function hasIdentity(event: BaseEvent): event is BaseEvent & { threadId: string;
 }
 
 /**
- * Direct AG-UI client for A2A Net's durable run endpoints.
+ * Direct AG-UI client for Agenta's durable run endpoints.
  *
  * The agent retains the complete local transcript while sending only the latest
  * user turn to the runtime, whose durable thread owns the prior history.
  */
-export class A2ANetAgent extends HttpAgent {
+export class AgentaAgent extends HttpAgent {
     private activeRun?: ActiveRun;
     private activeStream?: ActiveStream;
     private readonly cachedMessages = new Map<string, Message[]>();
     private readonly pendingRestores = new Map<string, Message[]>();
     private readonly messageRuns = new Map<string, ActiveRun>();
-    private readonly getContext?: () => A2ANetRunContext;
+    private readonly getContext?: () => AgentaRunContext;
 
     /** Create an agent that reads the caller's current context on every run. */
-    constructor({ getContext, ...config }: A2ANetAgentConfig) {
+    constructor({ getContext, ...config }: AgentaAgentConfig) {
         super(config);
         this.getContext = getContext;
     }
@@ -114,7 +114,7 @@ export class A2ANetAgent extends HttpAgent {
         );
     }
 
-    /** Cancel the active producer through A2A Net's durable cancel endpoint. */
+    /** Cancel the active producer through Agenta's durable cancel endpoint. */
     async cancelRun(): Promise<void> {
         const activeRun = this.activeRun;
         if (!activeRun) return;
@@ -143,7 +143,7 @@ export class A2ANetAgent extends HttpAgent {
     /** Start durable cancellation before disconnecting the local stream. */
     override abortRun(): void {
         void this.cancelRun().catch((error: unknown) => {
-            console.error("Failed to cancel the A2A Net run:", error);
+            console.error("Failed to cancel the Agenta run:", error);
         });
         this.activeRun = undefined;
         this.activeStream = undefined;

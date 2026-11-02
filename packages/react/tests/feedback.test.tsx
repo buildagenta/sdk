@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,18 +9,18 @@ import { cleanup, render, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 
 import {
-    type A2ANetAgent,
-    A2ANetProvider,
-    type A2ANetRateMessage,
-    A2ANetStatus,
-    useA2ANet,
-    useA2ANetFeedback,
+    type AgentaAgent,
+    AgentaProvider,
+    type AgentaRateMessage,
+    AgentaStatus,
+    useAgenta,
+    useAgentaFeedback,
 } from "../src/index.js";
 
 const originalFetch = globalThis.fetch;
 
-let agent: A2ANetAgent | null = null;
-let rate: A2ANetRateMessage | undefined;
+let agent: AgentaAgent | null = null;
+let rate: AgentaRateMessage | undefined;
 
 // A restored conversation of two turns, as agent-run replays it.
 const replay: BaseEvent[] = [
@@ -37,14 +37,14 @@ const replay: BaseEvent[] = [
 ];
 
 function Probe(): ReactNode {
-    agent = useA2ANet().agent;
-    rate = useA2ANetFeedback();
+    agent = useAgenta().agent;
+    rate = useAgentaFeedback();
     return null;
 }
 
 function CopilotBridge(): ReactNode {
-    const { copilotKitProps, status } = useA2ANet();
-    if (status !== A2ANetStatus.Ready) return null;
+    const { copilotKitProps, status } = useAgenta();
+    if (status !== AgentaStatus.Ready) return null;
     return (
         <CopilotKitProvider {...copilotKitProps}>
             <Probe />
@@ -54,7 +54,7 @@ function CopilotBridge(): ReactNode {
 
 function renderProbe(): void {
     render(
-        <A2ANetProvider
+        <AgentaProvider
             getCredentials={() =>
                 Promise.resolve({
                     token: "customer-token",
@@ -62,10 +62,10 @@ function renderProbe(): void {
                     agentId: "agent-1",
                 })
             }
-            runtimeUrl="https://runtime.a2anet.test"
+            runtimeUrl="https://runtime.buildagenta.test"
         >
             <CopilotBridge />
-        </A2ANetProvider>,
+        </AgentaProvider>,
     );
 }
 
@@ -76,7 +76,7 @@ afterEach(() => {
     rate = undefined;
 });
 
-describe("useA2ANetFeedback", () => {
+describe("useAgentaFeedback", () => {
     test("records feedback on the run that streamed a restored message", async () => {
         const requests: Array<{ url: string; init?: RequestInit }> = [];
         globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -101,7 +101,7 @@ describe("useA2ANetFeedback", () => {
 
         expect(requests).toHaveLength(1);
         expect(requests[0]?.url).toBe(
-            "https://runtime.a2anet.test/threads/thread-1/runs/run-2/feedback",
+            "https://runtime.buildagenta.test/threads/thread-1/runs/run-2/feedback",
         );
         expect(requests[0]?.init?.method).toBe("PUT");
         expect(new Headers(requests[0]?.init?.headers).get("Authorization")).toBe(

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026-present A2A Net <hello@a2anet.com>
+// SPDX-FileCopyrightText: 2026-present Agenta <hello@buildagenta.com>
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -23,22 +23,22 @@ import {
 } from "@copilotkit/react-core/v2";
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 
-import { useA2ANet } from "./provider.js";
+import { useAgenta } from "./provider.js";
 
-/** How an A2A Net conversation was started. */
-export type A2ANetThreadType = "user" | "scheduled";
+/** How an Agenta conversation was started. */
+export type AgentaThreadType = "user" | "scheduled";
 
-/** A CopilotKit conversation with its A2A Net initiation type. */
-export interface A2ANetThread extends Thread {
-    type: A2ANetThreadType;
+/** A CopilotKit conversation with its Agenta initiation type. */
+export interface AgentaThread extends Thread {
+    type: AgentaThreadType;
 }
 
-/** Configuration for {@link useA2ANetThreads}. */
-export type UseA2ANetThreadsInput = UseThreadsInput;
+/** Configuration for {@link useAgentaThreads}. */
+export type UseAgentaThreadsInput = UseThreadsInput;
 
-/** Thread state and operations returned by {@link useA2ANetThreads}. */
-export type UseA2ANetThreadsResult = Omit<UseThreadsResult, "threads"> & {
-    threads: A2ANetThread[];
+/** Thread state and operations returned by {@link useAgentaThreads}. */
+export type UseAgentaThreadsResult = Omit<UseThreadsResult, "threads"> & {
+    threads: AgentaThread[];
 };
 
 function useThreadStoreSelector<T>(
@@ -59,29 +59,29 @@ function useThreadStoreSelector<T>(
 }
 
 /**
- * List and manage A2A Net threads without dropping their initiation type.
+ * List and manage Agenta threads without dropping their initiation type.
  *
  * CopilotKit's thread store retains additional runtime fields, but its React hook
  * projects them onto CopilotKit's narrower public type. This hook uses the same store
- * and operations while carrying A2A Net's `type` through to the caller.
+ * and operations while carrying Agenta's `type` through to the caller.
  */
-export function useA2ANetThreads({
+export function useAgentaThreads({
     agentId,
     includeArchived,
     limit,
     enabled = true,
-}: UseA2ANetThreadsInput): UseA2ANetThreadsResult {
-    const { authenticatedFetch } = useA2ANet();
+}: UseAgentaThreadsInput): UseAgentaThreadsResult {
+    const { authenticatedFetch } = useAgenta();
     const { copilotkit } = useCopilotKit();
     const [store] = useState(() =>
         ɵcreateThreadStore({ fetch: authenticatedFetch as typeof globalThis.fetch }),
     );
 
     const coreThreads = useThreadStoreSelector(store, ɵselectThreads);
-    const threads = useMemo<A2ANetThread[]>(
+    const threads = useMemo<AgentaThread[]>(
         () =>
             coreThreads.map((thread) => {
-                const typed = thread as typeof thread & { type: A2ANetThreadType };
+                const typed = thread as typeof thread & { type: AgentaThreadType };
                 return {
                     id: typed.id,
                     agentId: typed.agentId,
