@@ -8,7 +8,7 @@ import { useAgenta } from "./provider.js";
 
 /** Where a scheduled chat's reply is sent, besides its own thread. */
 export type AgentaScheduleDelivery =
-    | { platform: "email" }
+    | { platform: "email"; cc?: string[] }
     | { platform: "slack"; channel?: { id: string; name: string } };
 
 /** A message Agenta sends the agent on the user's behalf, on a cron schedule. */
@@ -32,9 +32,12 @@ export interface AgentaScheduleInput {
     cron: string;
     timeZone?: string;
     enabled?: boolean;
-    /** A Slack channel is named by id or name; leaving it out sends a direct message. */
+    /**
+     * Email goes to the user's own address, copying in `cc` at their own company. A Slack
+     * channel is named by id or name; leaving it out sends a direct message.
+     */
     sendResponseTo?:
-        | { platform: "email" }
+        | { platform: "email"; cc?: string[] }
         | { platform: "slack"; channel?: { id?: string; name?: string } }
         | null;
 }

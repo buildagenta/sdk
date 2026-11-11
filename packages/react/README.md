@@ -206,7 +206,14 @@ await updateSchedule(schedule.id, { enabled: false });
 ```
 
 A run a schedule starts appears in `useAgentaThreads` with the type `"scheduled"`, and its
-reply can also be emailed or posted to Slack through `sendResponseTo`.
+reply can also be emailed or posted to Slack through `sendResponseTo`. Email goes to the
+user's own address, and `cc` copies in up to ten colleagues at the same company:
+
+```tsx
+await updateSchedule(schedule.id, {
+    sendResponseTo: { platform: "email", cc: ["sam@example.com"] },
+});
+```
 
 ## Context
 
