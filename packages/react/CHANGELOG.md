@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/buildagenta/sdk/compare/react-v0.5.0...react-v0.6.0) (2026-11-13)
+
+
+### Features
+
+* type an emailed schedule's CC addresses ([#10](https://github.com/buildagenta/sdk/issues/10)) ([d4b4526](https://github.com/buildagenta/sdk/commit/d4b45269eda6f7eb978e89196e03b45750f66b50))
+
 ## [0.5.0](https://github.com/buildagenta/sdk/compare/react-v0.4.0...react-v0.5.0) (2026-11-02)
 
 
